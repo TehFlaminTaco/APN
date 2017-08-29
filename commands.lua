@@ -26,7 +26,7 @@ t={
 	['['] = function(a)end,
 	[']'] = function(a)return a, a end,
 
-	['='] = function(a,b)
+	['='] = function(b,a)
 		if type(b)~="function"then
 			local v = b
 			b = function() return v end
@@ -79,6 +79,67 @@ t={
 	['.'] = function(a,b)return a..b end,
 	['>'] = function(a,b)return a > b and 1 or 0 end,
 	['<'] = function(a,b)return a < b and 1 or 0 end,
+
+	['°'] = function(g)
+		if(type(g)=="function")then
+			local inf = debug.getinfo(g)
+			local n = inf.isvararg and -1 or inf.nparams
+			return function()
+				local t = {}
+				if n ~= -1 then
+					for i=1, n do
+						t[i] = 0
+					end
+				end
+				return g(table.unpack(t))
+			end
+		end
+	end,
+	['¹'] = function(g)
+		if(type(g)=="function")then
+			local inf = debug.getinfo(g)
+			local n = inf.isvararg and -1 or inf.nparams
+			return function(a)
+				local t = {a}
+				if n ~= -1 then
+					for i=2, n do
+						t[i] = a
+					end
+				end
+				return g(table.unpack(t))
+			end
+		end
+	end,
+	['²'] = function(g)
+		if(type(g)=="function")then
+			local inf = debug.getinfo(g)
+			local n = inf.isvararg and -1 or inf.nparams
+			return function(a,b)
+				local t = {a,b}
+				if n ~= -1 then
+					for i=3, n do
+						t[i] = a
+					end
+				end
+				return g(table.unpack(t))
+			end
+		end
+	end,
+	['³'] = function(g)
+		if(type(g)=="function")then
+			local inf = debug.getinfo(g)
+			local n = inf.isvararg and -1 or inf.nparams
+			return function(a,b,c)
+				local t = {a,b,c}
+				if n ~= -1 then
+					for i=4, n do
+						t[i] = a
+					end
+				end
+				return g(table.unpack(t))
+			end
+		end
+	end,
 
 	r = function(a,b,c)
 		if type(a) == "table" then
